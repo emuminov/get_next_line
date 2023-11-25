@@ -1,0 +1,8 @@
+very very very very very very very!
+|            |            |       |
+node 1       node 2       node 3
+while (!list.tail->has_new_line)
+	malloc BUFF_SIZE
+	if !malloc return NULL
+	read_buffer(fd, buff, BUFF_SIZE)
+	
