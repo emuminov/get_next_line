@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/26 23:12:46 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:18:26 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*create_node_content(ssize_t size, char *buff, t_file *file)
 		file->file_ended = 1;
 	else if (buff[i] == '\n')
 	{
-		file->leftovers = create_leftovers(content, i);
+		file->leftovers = create_leftovers(buff, i);
 		content[i++] = '\n';
 		file->line++;
 	}
