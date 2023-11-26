@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 12:26:15 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/25 16:21:45 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/26 22:06:30 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	main(void)
 {
 	int fd = open("tests/small_file.txt", O_RDONLY);
-	get_next_line(fd);
+	printf("%s\n", get_next_line(fd));
 	get_next_line(fd);
 	get_next_line(fd);
 	close(fd);
