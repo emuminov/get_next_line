@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 15:05:12 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:06:27 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ char	*linked_list_str_join(t_linked_list *list)
 	}
 	res[i] = '\0';
 	return (res);
-}
-
-size_t	ft_strlen(char *str)
-{
-	size_t	l;
-
-	l = 0;
-	while (str[l])
-		l++;
-	return (l);
 }
 
 void	create_leftovers(char *buff, ssize_t index, ssize_t size, t_file *file)
