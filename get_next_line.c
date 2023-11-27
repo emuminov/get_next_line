@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/26 23:18:26 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:05:12 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,111 +55,153 @@ size_t	ft_strlen(char *str)
 	return (l);
 }
 
-char	*create_leftovers(char *content, ssize_t index)
+void	create_leftovers(char *buff, ssize_t index, ssize_t size, t_file *file)
 {
-	ssize_t	i;
 	char	*res;
+	ssize_t	i;
 
-	res = malloc(ft_strlen(&content[index + 1]));
+	res = malloc(sizeof(char) * (size - index));
 	if (!res)
-		return (0);
-	i = 0;
-	while (content[i + index + 1])
 	{
-		res[i] = content[index + i + 1];
+		if (file->leftovers)
+			free(file->leftovers);
+		file->leftovers = NULL;
+		return ;
+	}
+	i = 0;
+	while ((i + 1) < (size - index))
+	{
+		res[i] = buff[index + i + 1];
 		i++;
 	}
 	res[i] = '\0';
-	return (res);
+	if (file->leftovers)
+		free(file->leftovers);
+	file->leftovers = res;
+	file->leftovers_len = i;
 }
 
-char	*create_node_content(ssize_t size, char *buff, t_file *file)
+char	*create_node_content(ssize_t size, char *buff, t_file *file, t_node *node)
 {
-	char	*content;
-	size_t	i;
+	char	*res;
+	ssize_t	i;
 
-	content = malloc(size);
-	if (!content)
+	res = malloc(sizeof(char) * (size + 1));
+	if (!res)
 		return (0);
 	i = 0;
-	while (buff[i] && buff[i] != '\n' && i < BUFFER_SIZE)
+	while (buff[i] && buff[i] != '\n' && i < size)
 	{
-		content[i] = buff[i];
+		res[i] = buff[i];
 		i++;
 	}
 	if (buff[i] == '\0')
 		file->file_ended = 1;
 	else if (buff[i] == '\n')
 	{
-		file->leftovers = create_leftovers(buff, i);
-		content[i++] = '\n';
+		create_leftovers(buff, i, size, file);
+		res[i++] = '\n';
 		file->line++;
 	}
-	content[i] = '\0';
-	return (content);
+	res[i] = '\0';
+	node->content = res;
+	node->content_len = i;
+	return (res);
 }
 
-t_linked_list	*create_new_node(char *content, t_linked_list *list)
+void	free_linked_list(t_linked_list *list)
+{
+	t_node	*next;
+	t_node	*curr;
+
+	curr = list->head;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->content)
+			free(curr->content);
+		free(curr);
+		curr = next;
+	}
+	free(list);
+}
+
+t_node	*create_new_node(ssize_t size, t_file *file, char *buff, t_linked_list *list)
 {
 	t_node	*node;
 
 	node = malloc(sizeof(t_node));
 	if (!node)
 	{
-		// free list
-		free(content);
+		free_linked_list(list);
+		free(buff);
 		return (0);
 	}
-	node->content = content;
+	if (!create_node_content(size, buff, file, node))
+	{
+		free_linked_list(list);
+		return (0);
+	}
 	node->next = NULL;
-	node->content_len = ft_strlen(content);
 	if (!list->head)
 	{
 		list->head = node;
 		list->tail = node;
-		return (list);
+		return (node);
 	}
 	list->tail->next = node;
 	list->tail = node;
+	return (node);
+}
+
+t_linked_list	*init_linked_list(t_file *file)
+{
+	t_linked_list	*list;
+	t_node			*node;
+	list = malloc(sizeof(t_linked_list)); if (!list)
+	{
+		if (file->leftovers)
+			free(file->leftovers);
+		return (0);
+	}
+	list->head = NULL;
+	list->tail = NULL;
+	if (file->leftovers)
+	{
+		node = create_new_node(file->leftovers_len, file, file->leftovers, list);
+		if (!node)
+		{
+			if (file->leftovers)
+				free(file->leftovers);
+			free(list);
+			return (0);
+		}
+	}
 	return (list);
 }
 
 t_linked_list	*read_line(int fd, int current_line, t_file *file, char buff[BUFFER_SIZE])
 {
-	char			*content;
 	ssize_t 		size;
 	t_linked_list 	*list;
 
-	list = malloc(sizeof(t_linked_list));
+	list = init_linked_list(file);
 	if (!list)
 		return (0);
-	list->head = NULL;
-	list->tail = NULL;
-	if (file->leftovers)
-	{
-		content = create_node_content(ft_strlen(file->leftovers), file->leftovers, file);
-		create_new_node(content, list);
-	}
 	while (current_line == file->line)
 	{
 		size = read(fd, buff, BUFFER_SIZE);
 		if (size <= 0)
 			return (0);
-		content = create_node_content(size, buff, file);
-		if (!content)
+		if (!create_new_node(size, file, buff, list))
 		{
-			// free linked list
+			free_linked_list(list);
 			return (0);
 		}
-		if (!create_new_node(content, list))
-			return (0);
 	}
 	return (list);
 }
-// \n\0
-// hehe\nheh\0
 
-// jaksyhdjihasd\nkjhasjkdha\0
 char	*get_next_line(int fd)
 {
 	static t_file	file;
@@ -171,7 +213,6 @@ char	*get_next_line(int fd)
 	{
 		if (file.leftovers)
 			free(file.leftovers);
-		// free linked list
 		return (0);
 	}
 	list = read_line(fd, file.line, &file, buff);
@@ -181,12 +222,9 @@ char	*get_next_line(int fd)
 			free(file.leftovers);
 		return (0);
 	}
-	// find and assign leftovers to file
 	res = linked_list_str_join(list);
 	if (!res && file.leftovers)
-		// free linked list
 		free(file.leftovers);
-	printf("%zu\n", ft_strlen(res));
-	// free linked list
+	free_linked_list(list);
 	return (res);
 }

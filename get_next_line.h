@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/26 14:56:10 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:02:42 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_file {
 	int		line;
 	int		file_ended;
 	char	*leftovers;
+	int		leftovers_len;
 }	t_file;
 
 char	*get_next_line(int fd);
