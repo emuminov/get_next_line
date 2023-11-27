@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 15:02:42 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:25:23 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 
 typedef struct s_node {
 	struct s_node	*next;
-	char 			*content;
+	char			*content;
 	size_t			content_len;
 }	t_node;
 
-typedef struct s_linked_list {
+typedef struct s_list {
 	t_node	*head;
 	t_node	*tail;
-}	t_linked_list;
+}	t_list;
 
 typedef struct s_file {
 	int		line;
@@ -35,5 +35,8 @@ typedef struct s_file {
 }	t_file;
 
 char	*get_next_line(int fd);
+void	free_linked_list(t_list *list);
+t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *ls);
+t_list	*init_list(t_file *f);
 
 #endif
