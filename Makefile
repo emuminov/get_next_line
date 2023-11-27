@@ -9,6 +9,6 @@ test:
 	@./test.out
 	@valgrind ./test.out --check-leaks=full -s
 	@echo "$(GREEN)Cleaning up.$(OFF)"
-	@#rm test.out -f
+	@rm test.out -f
 
 .PHONY: test
