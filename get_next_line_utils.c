@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 15:27:13 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 23:39:47 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ static char	*create_content(ssize_t sz, char *buff, t_file *f, t_node *node)
 		res[i] = buff[i];
 		i++;
 	}
-	if (buff[i] == '\0')
-		f->file_ended = 1;
-	else if (buff[i] == '\n')
+	if (buff[i] == '\n')
 	{
 		create_leftovers(buff, i, sz, f);
 		res[i++] = '\n';
@@ -91,7 +89,6 @@ t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *list)
 	if (!node)
 	{
 		free_linked_list(list);
-		free(buff);
 		return (0);
 	}
 	if (!create_content(sz, buff, f, node))

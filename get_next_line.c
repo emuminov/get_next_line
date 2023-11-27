@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 15:26:01 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 23:50:50 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,28 @@ t_list	*read_line(int fd, int cl, t_file *f, char buff[BUFFER_SIZE])
 	{
 		sz = read(fd, buff, BUFFER_SIZE);
 		if (sz <= 0)
+		{
+			free_linked_list(list);
 			return (0);
+		}
 		if (!create_new_node(sz, f, buff, list))
 		{
 			free_linked_list(list);
 			return (0);
 		}
+		if (sz < BUFFER_SIZE || (sz == BUFFER_SIZE && buff[sz - 1] == '\0'))
+			f->file_ended = 1;
 	}
 	return (list);
+}
+
+static void	free_leftovers(t_file *f)
+{
+	if (f->leftovers)
+	{
+		free(f->leftovers);
+		f->leftovers = NULL;
+	}
 }
 
 char	*get_next_line(int fd)
@@ -83,20 +97,18 @@ char	*get_next_line(int fd)
 
 	if (BUFFER_SIZE <= 0 || fd == -1)
 	{
-		if (f.leftovers)
-			free(f.leftovers);
+		free_leftovers(&f);
 		return (0);
 	}
 	list = read_line(fd, f.line, &f, buff);
 	if (!list)
 	{
-		if (f.leftovers)
-			free(f.leftovers);
+		free_leftovers(&f);
 		return (0);
 	}
 	res = linked_list_str_join(list);
 	if (!res && f.leftovers)
-		free(f.leftovers);
+		free_leftovers(&f);
 	free_linked_list(list);
 	return (res);
 }
