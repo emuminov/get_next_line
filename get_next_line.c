@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 15:11:43 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:16:12 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 #include <stdio.h>
 #include "get_next_line.h"
 
-char	*linked_list_str_join(t_linked_list *list)
+size_t	calculate_len_of_linked_list_strs(t_linked_list *list)
 {
-	t_node	*curr;
 	size_t	res_len;
-	size_t	i;
-	size_t	j;
-	char	*res;
+	t_node	*curr;
 
 	curr = list->head;
 	res_len = 0;
@@ -29,7 +26,19 @@ char	*linked_list_str_join(t_linked_list *list)
 		res_len += curr->content_len;
 		curr = curr->next;
 	}
-	res = malloc(sizeof(char) * (res_len + 1));
+	return (res_len);
+}
+
+char	*linked_list_str_join(t_linked_list *list)
+{
+	t_node	*curr;
+	size_t	l;
+	size_t	i;
+	size_t	j;
+	char	*res;
+
+	l = calculate_len_of_linked_list_strs(list);
+	res = malloc(sizeof(char) * (l + 1));
 	if (!res)
 		return (0);
 	curr = list->head;
