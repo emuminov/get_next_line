@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 12:26:15 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 00:04:25 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:29:24 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,12 @@
 	char *test = get_next_line(fd); \
 	if (test) \
 		printf("%s", test); \
-	else \
-	{ \
-		printf("End of the file.\n"); \
-		exit(0); \
-	} \
 	free(test); \
 }
 
 int	main(void)
 {
-	int fd = open("tests/file.txt", O_RDONLY);
+	int fd = open("tests/super_small_file.txt", O_RDONLY);
 	get_next_line_test(fd);
 	get_next_line_test(fd);
 	get_next_line_test(fd);

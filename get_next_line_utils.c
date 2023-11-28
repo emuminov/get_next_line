@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 23:39:47 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:53:04 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ static char	*create_content(ssize_t sz, char *buff, t_file *f, t_node *node)
 	if (!res)
 		return (0);
 	i = 0;
-	while (buff[i] && buff[i] != '\n' && i < sz)
+	while (buff[i] && i < sz)
 	{
 		res[i] = buff[i];
+		if (buff[i] == '\n')
+		{
+			create_leftovers(buff, i++, sz, f);
+			f->line++;
+			break ;
+		}
 		i++;
-	}
-	if (buff[i] == '\n')
-	{
-		create_leftovers(buff, i, sz, f);
-		res[i++] = '\n';
-		f->line++;
 	}
 	res[i] = '\0';
 	node->content = res;
@@ -108,18 +108,18 @@ t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *list)
 	return (node);
 }
 
-t_list	*init_list(t_file *f)
+t_list	*init_list(t_file *f, char *buff)
 {
 	t_list	*list;
 	t_node	*node;
+	size_t	i;
 
+	i = 0;
+	while (i < BUFFER_SIZE)
+		*(buff + i++) = 0;
 	list = malloc(sizeof(t_list));
 	if (!list)
-	{
-		if (f->leftovers)
-			free(f->leftovers);
 		return (0);
-	}
 	list->head = NULL;
 	list->tail = NULL;
 	if (f->leftovers)

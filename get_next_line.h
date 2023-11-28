@@ -6,15 +6,15 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/27 15:25:23 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:49:50 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <unistd.h>
 # include <stdlib.h>
-# define BUFFER_SIZE 13
+# include <unistd.h>
+# define BUFFER_SIZE 3
 
 typedef struct s_node {
 	struct s_node	*next;
@@ -37,6 +37,6 @@ typedef struct s_file {
 char	*get_next_line(int fd);
 void	free_linked_list(t_list *list);
 t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *ls);
-t_list	*init_list(t_file *f);
+t_list	*init_list(t_file *f, char *buff);
 
 #endif
