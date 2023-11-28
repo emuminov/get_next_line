@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 15:49:50 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:27:47 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define GET_NEXT_LINE_H
 # include <stdlib.h>
 # include <unistd.h>
+# ifndef BUFFER_SIZE
 # define BUFFER_SIZE 3
+# endif
 
 typedef struct s_node {
 	struct s_node	*next;

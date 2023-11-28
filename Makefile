@@ -4,11 +4,15 @@ OFF=\033[0;0m
 
 test:
 	@echo "$(GREEN)Compiling tests...$(OFF)"
-	@$(CC) get_next_line.c get_next_line_utils.c tests/get_next_line.c -o test.out -g
+	@$(CC) get_next_line.c get_next_line_utils.c tests/get_next_line.c -o test.out -g3
 	@echo "$(YELLOW)Test output:$(OFF)"
 	@./test.out
 	@valgrind ./test.out --check-leaks=full -s
 	@echo "$(GREEN)Cleaning up.$(OFF)"
 	@rm test.out -f
+
+debug:
+	@echo "$(GREEN)Compiling debug binary...$(OFF)"
+	@$(CC) get_next_line.c get_next_line_utils.c tests/get_next_line.c -o test.out -g3 -D BUFFER_SIZE=3
 
 .PHONY: test
