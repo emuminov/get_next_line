@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 18:30:32 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:58:25 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*get_next_line(int fd)
 	static t_file	f;
 	t_list			*list;
 	char			*res;
-	char			buff[BUFFER_SIZE];
+	char			buff[BUFFER_SIZE + 1];
 
 	if (BUFFER_SIZE <= 0 || fd == -1 || f.file_ended)
 	{

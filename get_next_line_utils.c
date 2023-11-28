@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 15:53:04 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:59:19 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ t_list	*init_list(t_file *f, char *buff)
 	size_t	i;
 
 	i = 0;
-	while (i < BUFFER_SIZE)
+	while (i <= BUFFER_SIZE)
 		*(buff + i++) = 0;
 	list = malloc(sizeof(t_list));
 	if (!list)
