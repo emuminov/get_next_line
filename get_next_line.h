@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/29 19:51:11 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:33:01 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,10 @@ typedef struct s_file {
 	int		leftovers_len;
 }	t_file;
 
-enum e_freeing_code {
-	FREE_LEFTOVERS,
-	FREE_LINKED_LIST,
-};
-
 char	*get_next_line(int fd);
-void	free_linked_list(t_list *list);
-t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *ls);
-t_list	*init_list(t_file *f);
+void	linked_list_free(t_list *list);
+t_list	*linked_list_init(t_file *f);
+void	*cleanup(t_list *list, char *buff, t_file *f, int free_leftovers);
+t_node	*linked_list_new_node(ssize_t sz, t_file *f, char *buff, t_list *ls);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/29 15:00:19 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:37:35 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	create_leftovers(char *buff, ssize_t index, ssize_t sz, t_file *f)
+static void	file_add_leftovers(char *buff, ssize_t index, ssize_t sz, t_file *f)
 {
 	char	*res;
 	ssize_t	i;
@@ -38,7 +38,7 @@ static void	create_leftovers(char *buff, ssize_t index, ssize_t sz, t_file *f)
 	f->leftovers_len = i;
 }
 
-static char	*create_content(ssize_t sz, char *buff, t_file *f, t_node *node)
+static char	*node_add_content(ssize_t sz, char *buff, t_file *f, t_node *node)
 {
 	char	*res;
 	ssize_t	i;
@@ -52,7 +52,7 @@ static char	*create_content(ssize_t sz, char *buff, t_file *f, t_node *node)
 		res[i] = buff[i];
 		if (buff[i] == '\n')
 		{
-			create_leftovers(buff, i++, sz, f);
+			file_add_leftovers(buff, i++, sz, f);
 			f->line++;
 			break ;
 		}
@@ -64,7 +64,7 @@ static char	*create_content(ssize_t sz, char *buff, t_file *f, t_node *node)
 	return (res);
 }
 
-void	free_linked_list(t_list *list)
+void	linked_list_free(t_list *list)
 {
 	t_node	*next;
 	t_node	*curr;
@@ -81,19 +81,16 @@ void	free_linked_list(t_list *list)
 	free(list);
 }
 
-t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *list)
+t_node	*linked_list_new_node(ssize_t sz, t_file *f, char *buff, t_list *list)
 {
 	t_node	*node;
 
 	node = malloc(sizeof(t_node));
 	if (!node)
-	{
-		free_linked_list(list);
 		return (0);
-	}
-	if (!create_content(sz, buff, f, node))
+	if (!node_add_content(sz, buff, f, node))
 	{
-		free_linked_list(list);
+		free(node);
 		return (0);
 	}
 	node->next = NULL;
@@ -108,7 +105,7 @@ t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *list)
 	return (node);
 }
 
-t_list	*init_list(t_file *f)
+t_list	*linked_list_init(t_file *f)
 {
 	t_list	*list;
 	t_node	*node;
@@ -120,11 +117,9 @@ t_list	*init_list(t_file *f)
 	list->tail = NULL;
 	if (f->leftovers)
 	{
-		node = create_new_node(f->leftovers_len, f, f->leftovers, list);
+		node = linked_list_new_node(f->leftovers_len, f, f->leftovers, list);
 		if (!node)
 		{
-			if (f->leftovers)
-				free(f->leftovers);
 			free(list);
 			return (0);
 		}
