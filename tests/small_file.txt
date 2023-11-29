@@ -1,3 +1,2 @@
-very very very very very very very!
-|            |            |       |
-node 1       node 2       node 3
+Small file.
+The End.

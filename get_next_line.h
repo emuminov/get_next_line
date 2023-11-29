@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 18:27:47 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:51:11 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # ifndef BUFFER_SIZE
-# define BUFFER_SIZE 3
+#  define BUFFER_SIZE 3
 # endif
 
 typedef struct s_node {
@@ -36,9 +36,14 @@ typedef struct s_file {
 	int		leftovers_len;
 }	t_file;
 
+enum e_freeing_code {
+	FREE_LEFTOVERS,
+	FREE_LINKED_LIST,
+};
+
 char	*get_next_line(int fd);
 void	free_linked_list(t_list *list);
 t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *ls);
-t_list	*init_list(t_file *f, char *buff);
+t_list	*init_list(t_file *f);
 
 #endif

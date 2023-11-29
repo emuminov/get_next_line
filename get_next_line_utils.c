@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 19:59:19 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:00:19 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,11 @@ t_node	*create_new_node(ssize_t sz, t_file *f, char *buff, t_list *list)
 	return (node);
 }
 
-t_list	*init_list(t_file *f, char *buff)
+t_list	*init_list(t_file *f)
 {
 	t_list	*list;
 	t_node	*node;
-	size_t	i;
 
-	i = 0;
-	while (i <= BUFFER_SIZE)
-		*(buff + i++) = 0;
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (0);

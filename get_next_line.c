@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/28 19:58:25 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:50:35 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ char	*linked_list_str_join(t_list *list)
 	return (res);
 }
 
-t_list	*read_line(int fd, int cl, t_file *f, char buff[BUFFER_SIZE])
+t_list	*read_line(int fd, int cl, t_file *f, char *buff)
 {
 	ssize_t	sz;
 	t_list	*list;
 
-	list = init_list(f, buff);
+	list = init_list(f);
 	if (!list)
 		return (0);
 	while (cl == f->line)
@@ -74,19 +74,24 @@ t_list	*read_line(int fd, int cl, t_file *f, char buff[BUFFER_SIZE])
 			free_linked_list(list);
 			return (0);
 		}
-		if (sz < BUFFER_SIZE)
-			f->file_ended = 1;
+		// if (sz < BUFFER_SIZE)
+		// 	f->file_ended = 1;
 	}
 	return (list);
 }
 
-static void	free_leftovers(t_file *f)
+static void	*cleanup(t_list *list, char *buff, t_file *f, enum e_freeing_code c)
 {
-	if (f->leftovers)
+	if (buff)
+		free(buff);
+	if (f && f->leftovers && (f->file_ended || c == FREE_LEFTOVERS))
 	{
 		free(f->leftovers);
 		f->leftovers = NULL;
 	}
+	if (list && c == FREE_LINKED_LIST)
+		free_linked_list(list);
+	return (0);
 }
 
 char	*get_next_line(int fd)
@@ -94,24 +99,17 @@ char	*get_next_line(int fd)
 	static t_file	f;
 	t_list			*list;
 	char			*res;
-	char			buff[BUFFER_SIZE + 1];
+	char			*buff;
 
 	if (BUFFER_SIZE <= 0 || fd == -1 || f.file_ended)
-	{
-		free_leftovers(&f);
-		return (0);
-	}
+		return (cleanup(NULL, NULL, &f, FREE_LEFTOVERS));
+	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buff)
+		return (cleanup(NULL, NULL, &f, FREE_LEFTOVERS));
 	list = read_line(fd, f.line, &f, buff);
 	if (!list)
-	{
-		free_leftovers(&f);
-		return (0);
-	}
+		return cleanup(NULL, buff, &f, FREE_LEFTOVERS);
 	res = linked_list_str_join(list);
-	if (!res && f.leftovers)
-		free_leftovers(&f);
-	free_linked_list(list);
-	if (f.file_ended)
-		free_leftovers(&f);
+	cleanup(list, buff, &f, FREE_LINKED_LIST);
 	return (res);
 }
