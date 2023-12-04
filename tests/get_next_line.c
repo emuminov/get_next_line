@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 12:26:15 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/29 21:12:08 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/11/30 21:32:09 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,26 @@ int	main(void)
 	get_next_line_test(fd);
 	get_next_line_test(fd);
 	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
-	get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
+	// get_next_line_test(fd);
 	close(fd);
 }

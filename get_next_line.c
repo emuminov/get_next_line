@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:03 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/29 20:35:46 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/12/04 01:19:36 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,22 @@ t_list	*read_line(int fd, int cl, t_file *f, char *buff)
 	t_list	*list;
 	size_t	i;
 
-	i = 0;
-	while (i < BUFFER_SIZE + 1)
-		buff[i++] = 0;
 	list = linked_list_init(f);
 	if (!list)
 		return (0);
-	while (cl == f->line)
+	while (cl == f->line && !f->file_ended)
 	{
+		i = 0;
+		while (i < BUFFER_SIZE + 1)
+			buff[i++] = 0;
 		sz = read(fd, buff, BUFFER_SIZE);
-		if (sz <= 0)
+		if (sz == -1 || (sz == 0 && !list->head))
 		{
 			f->file_ended = 1;
 			return (cleanup(list, NULL, NULL, 0));
 		}
+		else if (sz == 0 && list->head)
+			f->file_ended = 1;
 		if (!linked_list_new_node(sz, f, buff, list))
 			return (cleanup(list, NULL, NULL, 0));
 	}

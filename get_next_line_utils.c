@@ -6,11 +6,11 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/11/29 20:37:35 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/12/04 01:19:53 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static void	file_add_leftovers(char *buff, ssize_t index, ssize_t sz, t_file *f)
 {
@@ -47,7 +47,7 @@ static char	*node_add_content(ssize_t sz, char *buff, t_file *f, t_node *node)
 	if (!res)
 		return (0);
 	i = 0;
-	while (buff[i] && i < sz)
+	while (buff[i])
 	{
 		res[i] = buff[i];
 		if (buff[i] == '\n')
@@ -115,7 +115,7 @@ t_list	*linked_list_init(t_file *f)
 		return (0);
 	list->head = NULL;
 	list->tail = NULL;
-	if (f->leftovers)
+	if (f->leftovers && f->leftovers_len > 0)
 	{
 		node = linked_list_new_node(f->leftovers_len, f, f->leftovers, list);
 		if (!node)
