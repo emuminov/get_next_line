@@ -48,8 +48,21 @@ test:
 	@echo "$(GREEN)Cleaning up.$(OFF)"
 	@rm test.out -f
 
+test_bonus:
+	@echo "$(GREEN)Compiling tests...$(OFF)"
+	@$(CC) get_next_line_bonus.c get_next_line_utils_bonus.c tests/get_next_line_bonus.c -o test.out -g3 -D BUFFER_SIZE=$(BUFFER_SIZE)
+	@echo "$(YELLOW)File test output:$(OFF)"
+	@./test.out
+	@valgrind ./test.out --track-origins=yes --check-leaks=full -s
+	@echo "$(GREEN)Cleaning up.$(OFF)"
+	@rm test.out -f
+
 debug:
 	@echo "$(GREEN)Compiling debug binary...$(OFF)"
 	@$(CC) get_next_line.c get_next_line_utils.c tests/get_next_line.c -o test.out -g3 -D BUFFER_SIZE=$(BUFFER_SIZE) -D TEST_FILE="\"tests/small_file.txt\""
+
+debug_bonus:
+	@echo "$(GREEN)Compiling debug binary...$(OFF)"
+	@$(CC) get_next_line_bonus.c get_next_line_utils_bonus.c tests/get_next_line_bonus.c -o test.out -g3 -D BUFFER_SIZE=$(BUFFER_SIZE)
 
 .PHONY: test debug

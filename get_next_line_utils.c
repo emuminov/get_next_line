@@ -6,11 +6,11 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:08 by emuminov          #+#    #+#             */
-/*   Updated: 2023/12/04 01:19:53 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/12/04 01:30:41 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 static void	file_add_leftovers(char *buff, ssize_t index, ssize_t sz, t_file *f)
 {

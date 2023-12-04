@@ -6,11 +6,11 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:36:15 by emuminov          #+#    #+#             */
-/*   Updated: 2023/12/02 18:42:12 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/12/04 02:03:07 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	linked_list_calculate_content_len(t_list *list)
 {
@@ -72,20 +72,22 @@ t_list	*read_line(int fd, int cl, t_file *f, char *buff)
 	t_list	*list;
 	size_t	i;
 
-	i = 0;
-	while (i < BUFFER_SIZE + 1)
-		buff[i++] = 0;
 	list = linked_list_init(f);
 	if (!list)
 		return (0);
-	while (cl == f->line)
+	while (cl == f->line && !f->file_ended)
 	{
+		i = 0;
+		while (i < BUFFER_SIZE + 1)
+			buff[i++] = 0;
 		sz = read(fd, buff, BUFFER_SIZE);
-		if (sz <= 0)
+		if (sz == -1 || (sz == 0 && !list->head))
 		{
 			f->file_ended = 1;
 			return (cleanup(list, NULL, NULL, 0));
 		}
+		else if (sz == 0 && list->head)
+			f->file_ended = 1;
 		if (!linked_list_new_node(sz, f, buff, list))
 			return (cleanup(list, NULL, NULL, 0));
 	}
@@ -94,24 +96,23 @@ t_list	*read_line(int fd, int cl, t_file *f, char *buff)
 
 char	*get_next_line(int fd)
 {
-	static t_file	files[1025];
-	t_file			f;
+	static t_file	files[4096];
 	t_list			*list;
 	char			*res;
 	char			*buff;
 
-	if (fd == -1)
+	if (fd == -1 || fd > 4096)
 		return (0);
-	f = files[fd];
-	if (BUFFER_SIZE <= 0 || fd == -1 || f.file_ended)
-		return (cleanup(NULL, NULL, &f, 1));
+	if (BUFFER_SIZE <= 0 || files[fd].file_ended)
+		return (cleanup(NULL, NULL, &files[fd], 1));
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
-		return (cleanup(NULL, NULL, &f, 1));
-	list = read_line(fd, f.line, &f, buff);
+		return (cleanup(NULL, NULL, &files[fd], 1));
+	list = read_line(fd, files[fd].line, &files[fd], buff);
 	if (!list)
-		return cleanup(NULL, buff, &f, 1);
+		return cleanup(NULL, buff, &files[fd], 1);
 	res = linked_list_content_join(list);
-	cleanup(list, buff, &f, 0);
+	cleanup(list, buff, &files[fd], 0);
 	return (res);
 }
+
