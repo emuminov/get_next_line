@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:36:47 by emuminov          #+#    #+#             */
-/*   Updated: 2023/12/04 01:31:07 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/12/04 02:13:19 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,3 @@ t_list	*linked_list_init(t_file *f)
 	}
 	return (list);
 }
-

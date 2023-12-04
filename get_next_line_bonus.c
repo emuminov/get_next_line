@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:36:15 by emuminov          #+#    #+#             */
-/*   Updated: 2023/12/04 02:03:07 by emuminov         ###   ########.fr       */
+/*   Updated: 2023/12/04 02:12:58 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,8 @@ char	*get_next_line(int fd)
 		return (cleanup(NULL, NULL, &files[fd], 1));
 	list = read_line(fd, files[fd].line, &files[fd], buff);
 	if (!list)
-		return cleanup(NULL, buff, &files[fd], 1);
+		return (cleanup(NULL, buff, &files[fd], 1));
 	res = linked_list_content_join(list);
 	cleanup(list, buff, &files[fd], 0);
 	return (res);
 }
-
